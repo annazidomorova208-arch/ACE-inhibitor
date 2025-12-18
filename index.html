@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ИГХТУ | Разработка ингибитора АПФ с уникальным структурно-функциональным хемотипом</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-burgundy: #5d0c0c;
+            --secondary-burgundy: #840f0f;
+            --accent-gold: #b8860b;
+            --accent-dark: #2c1810;
+            --light-beige: #f8f4f0;
+            --dark-brown: #3a2618;
+            --white: #ffffff;
+            --shadow: 0 4px 20px rgba(93, 12, 12, 0.08);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-brown);
+            background-color: var(--white);
+            scroll-behavior: smooth;
+        }
+        
+        /* Современный заголовок */
+        .modern-header {
+            background: linear-gradient(135deg, var(--primary-burgundy), var(--secondary-burgundy));
+            color: var(--white);
+            padding: 80px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .modern-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.05)"/></svg>');
+            background-size: cover;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header-logo {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .main-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        /* Навигация */
+        .modern-nav {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 12px 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            gap: 15px;
+        }
+        
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--light-beige);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-dot:hover {
+            background: var(--primary-burgundy);
+            transform: scale(1.3);
+        }
+        
+        .nav-dot.active {
+            background: var(--accent-gold);
+            transform: scale(1.3);
+        }
+        
+        .nav-dot::after {
+            content: attr(data-title);
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--primary-burgundy);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        
+        .nav-dot:hover::after {
+            opacity: 1;
+        }
+        
+        /* Секции */
+        .section {
+            min-height: 100vh;
+            padding: 80px 40px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .section:nth-child(even) {
+            background-color: var(--light-beige);
+        }
+        
+        .section-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .section-number {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            font-size: 120px;
+            font-weight: 900;
+            color: rgba(93, 12, 12, 0.05);
+            z-index: 0;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-burgundy);
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--accent-gold);
+        }
+        
+        /* Карточки */
+        .card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--accent-gold);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            color: var(--primary-burgundy);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Контейнеры для изображений */
+        .image-container {
+            margin: 40px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 8px 30px rgba(93, 12, 12, 0.12);
+            border: 1px solid rgba(93, 12, 12, 0.1);
+        }
+        
+        .image-placeholder {
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, #f5f0eb, #f8f4f0);
+            padding: 60px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .image-placeholder i {
+            font-size: 64px;
+            color: var(--primary-burgundy);
+            margin-bottom: 20px;
+        }
+        
+        .image-instruction {
+            background: var(--primary-burgundy);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+        
+        .image-caption {
+            background: var(--primary-burgundy);
+            color: white;
+            padding: 20px;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        /* Метрики */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .metric-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--primary-burgundy);
+        }
+        
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-burgundy);
+            margin-bottom: 10px;
+        }
+        
+        .metric-label {
+            color: var(--dark-brown);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        /* Сравнительная таблица */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .comparison-table th {
+            background: var(--primary-burgundy);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .comparison-table td {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .advantage-cell {
+            color: var(--primary-burgundy);
+            font-weight: 600;
+        }
+        
+        /* Таблица реактивов */
+        .reagents-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .reagents-table th {
+            background: var(--primary-burgundy);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .reagents-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .reagents-table a {
+            color: var(--primary-burgundy);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .reagents-table a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Команда */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .team-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: transform 0.3s ease;
+            border-top: 4px solid var(--accent-gold);
+        }
+        
+        .team-card:hover {
+            transform: translateY(-8px);
+        }
+        
+        .team-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-burgundy), var(--secondary-burgundy));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 32px;
+        }
+        
+        /* Диаграммы биодоступности */
+        .bioavailability-chart {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            height: 300px;
+            margin: 40px 0;
+            padding: 30px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+        }
+        
+        .chart-bar {
+            width: 100px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .bar-fill {
+            width: 60px;
+            margin: 0 auto;
+            border-radius: 8px 8px 0 0;
+            transition: height 1s ease;
+        }
+        
+        .bar-analog {
+            background: linear-gradient(to top, var(--primary-burgundy), var(--secondary-burgundy));
+        }
+        
+        .bar-enalapril {
+            background: linear-gradient(to top, #8b7355, #a38b6d);
+        }
+        
+        .bar-value {
+            position: absolute;
+            top: -35px;
+            left: 0;
+            right: 0;
+            font-weight: bold;
+            color: var(--primary-burgundy);
+            font-size: 1.2rem;
+        }
+        
+        .bar-label {
+            margin-top: 15px;
+            font-weight: 600;
+            color: var(--dark-brown);
+        }
+        
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Футер */
+        .footer {
+            background: var(--dark-brown);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+        
+        .contact-info {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            
+            .section {
+                padding: 60px 20px;
+            }
+            
+            .modern-nav {
+                top: 10px;
+                right: 10px;
+                padding: 8px 15px;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .bioavailability-chart {
+                flex-direction: column;
+                height: auto;
+                align-items: center;
+            }
+            
+            .chart-bar {
+                margin-bottom: 40px;
+            }
+            
+            .comparison-table, .reagents-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+        
+        /* Стили для оглавления */
+        .toc-container {
+            background: var(--light-beige);
+            padding: 40px;
+            border-bottom: 2px solid var(--primary-burgundy);
+        }
+        
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .toc-item {
+            display: block;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--dark-brown);
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            border-left: 4px solid var(--primary-burgundy);
+        }
+        
+        .toc-item:hover {
+            transform: translateY(-3px);
+        }
+        
+        .toc-item-number {
+            background: var(--primary-burgundy);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        /* Стили для временной шкалы */
+        .timeline-container {
+            position: relative;
+            margin: 40px 0;
+            padding-left: 30px;
+        }
+        
+        .timeline-line {
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--primary-burgundy);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: -30px;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
+        
+        .timeline-content {
+            padding-left: 40px;
+        }
+        
+        /* Стили для источников */
+        .sources-container {
+            background: var(--light-beige);
+            padding: 40px 20px;
+        }
+        
+        .sources-toggle-btn {
+            background: var(--primary-burgundy);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .sources-toggle-btn:hover {
+            background: var(--secondary-burgundy);
+        }
+        
+        .sources-content {
+            display: none;
+            margin-top: 40px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+        
+        .sources-content.show {
+            display: block;
+            max-height: 1000px;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Современная навигация -->
+    <div class="modern-nav">
+        <div class="nav-dot active" data-title="Резюме" data-section="summary"></div>
+        <div class="nav-dot" data-title="Проблема" data-section="problem"></div>
+        <div class="nav-dot" data-title="Механизм" data-section="mechanism"></div>
+        <div class="nav-dot" data-title="Дизайн" data-section="design"></div>
+        <div class="nav-dot" data-title="Синтез" data-section="synthesis"></div>
+        <div class="nav-dot" data-title="Коммерция" data-section="commercial"></div>
+        <div class="nav-dot" data-title="Планы" data-section="future-plans"></div>
+        <div class="nav-dot" data-title="Команда" data-section="team"></div>
+    </div>
+
+    <!-- Заголовок -->
+    <header class="modern-header">
+        <div class="header-content">
+            <div class="header-logo">ИГХТУ • Научно-исследовательский проект</div>
+            <h1 class="main-title">Новый ингибитор АПФ на основе эналаприла</h1>
+            <p class="subtitle">Разработка высокоэффективного антигипертензивного препарата с уникальным структурно-функциональным хемотипом</p>
+        </div>
+    </header>
+
+    <!-- Оглавление -->
+    <div class="toc-container">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <h2 style="color: var(--primary-burgundy); margin-bottom: 25px; text-align: center; font-size: 2rem;">
+                <i class="fas fa-list" style="margin-right: 10px;"></i> Оглавление проекта
+            </h2>
+            
+            <div class="toc-grid">
+                <!-- Раздел 1 -->
+                <a href="#summary" class="toc-item" onclick="scrollToSection('summary')">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                        <div class="toc-item-number">1</div>
+                        <h3 style="color: var(--primary-burgundy); margin: 0; font-size: 1.1rem;">Краткое резюме проекта</h3>
+                    </div>
+                    <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">Цель, ключевые метрики и преимущества</p>
+                </a>
+                
+                <!-- Раздел 2 -->
+                <a href="#problem" class="toc-item" onclick="scrollToSection('problem')">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                        <div class="toc-item-number" style="background: var(--secondary-burgundy);">2</div>
+                        <h3 style="color: var(--secondary-burgundy); margin: 0; font-size: 1.1rem;">Проблема артериальной гипертензии</h3>
+                    </div>
+                    <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">Эпидемиология и статистика гипертензии</p>
+                </a>
+                
+                <!-- Раздел 3 -->
+                <a href="#mechanism" class="toc-item" onclick="scrollToSection('mechanism')">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                        <div class="toc-item-number" style="background: var(--accent-gold);">3</div>
+                        <h3 style="color: var(--accent-gold); margin: 0; font-size: 1.1rem;">Механизм действия на биомишень</h3>
+                    </div>
+                    <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">Биомишень и принцип ингибирования</p>
+                </a>
+                
+                <!-- Раздел 4 -->
+                <a href="#design" class="toc-item" onclick="scrollToSection('design')">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                        <div class="toc-item-number">4</div>
+                        <h3 style="color: var(--primary-burgundy); margin: 0; font-size: 1.1rem;">Медицинско-химический дизайн</h3>
+                    </div>
+                    <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">Сравнение ADME-профилей</p>
+                </a>
+                
+                <!-- Раздел 5 -->
+                <a href="#synthesis" class="toc-item" onclick="scrollToSection('synthesis')">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                        <div class="toc-item-number" style="background: var(--secondary-burgundy);">5</div>
+                        <h3 style="color: var(--secondary-burgundy); margin: 0; font-size: 1.1rem;">Синтез и экспериментальная часть</h3>
+                    </div>
+                    <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">Схема синтеза и реактивы</p>
+                </a>
+                
+                <!-- Раздел 6 -->
+                <a href="#commercial" class="toc-item" onclick="scrollToSection('commercial')">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                        <div class="toc-item-number" style="background: var(--accent-gold);">6</div>
+                        <h3 style="color: var(--accent-gold); margin: 0; font-size: 1.1rem;">Аспекты коммерциализации</h3>
+                    </div>
+                    <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">Рынок и конкурентные преимущества</p>
+                </a>
+                
+                <!-- Раздел 7 -->
+                <a href="#future-plans" class="toc-item" onclick="scrollToSection('future-plans')">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                        <div class="toc-item-number">7</div>
+                        <h3 style="color: var(--primary-burgundy); margin: 0; font-size: 1.1rem;">Планы на будущее и этапы реализации</h3>
+                    </div>
+                    <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">Хронология проекта с 2030 года</p>
+                </a>
+                
+                <!-- Раздел 8 -->
+                <a href="#team" class="toc-item" onclick="scrollToSection('team')">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                        <div class="toc-item-number" style="background: var(--secondary-burgundy);">8</div>
+                        <h3 style="color: var(--secondary-burgundy); margin: 0; font-size: 1.1rem;">Команда проекта</h3>
+                    </div>
+                    <p style="margin: 0; font-size: 0.9rem; opacity: 0.9;">Участники и контактная информация</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Раздел 1: Резюме -->
+    <section id="summary" class="section">
+        <div class="section-number">01</div>
+        <div class="section-content">
+            <h2 class="section-title">Краткое резюме проекта</h2>
+            
+            <div class="image-container">
+                <img src="analog.jpg" alt="Структура разрабатываемого аналога" style="width: 100%; height: auto;">
+                <div class="image-caption">Рис. 1. Структурная формула разрабатываемого аналога эналаприла</div>
+            </div>
+            
+            <div class="card">
+                <h3 class="card-title">
+                    <i class="fas fa-bullseye" style="color: var(--primary-burgundy);"></i> Цель проекта
+                </h3>
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--dark-brown);">
+                    Разработка структурного аналога эналаприла с улучшенными ADME-параметрами, сниженной токсичностью и повышенной эффективностью за счет направленного молекулярного дизайна и компьютерного моделирования.
+                </p>
+            </div>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">↑ 35×</div>
+                    <div class="metric-label">Эффективнее эналаприла</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">↓ 32%</div>
+                    <div class="metric-label">Стоимость синтеза</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">55%</div>
+                    <div class="metric-label">Выход синтеза</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Раздел 2: Проблема -->
+    <section id="problem" class="section">
+        <div class="section-number">02</div>
+        <div class="section-content">
+            <h2 class="section-title">Глобальная проблема артериальной гипертензии</h2>
+            
+            <img src="vos.jpg" alt="Структура разрабатываемого аналога" style="width: 100%; height: auto;">
+            
+            <div class="card">
+                <h3 class="card-title">
+                    <i class="fas fa-exclamation-triangle" style="color: var(--primary-burgundy);"></i> Ключевые статистические данные
+                </h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px;">
+                    <div>
+                        <h4 style="color: var(--primary-burgundy); font-size: 2rem; margin-bottom: 5px;">1.4 млрд</h4>
+                        <p style="color: var(--dark-brown);">пациентов с повышенным АГ во всем мире</p>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--secondary-burgundy); font-size: 2rem; margin-bottom: 5px;">46%</h4>
+                        <p style="color: var(--dark-brown);">не знают о диагнозе</p>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--accent-gold); font-size: 2rem; margin-bottom: 5px;">42%</h4>
+                        <p style="color: var(--dark-brown);">получают лечение</p>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--primary-burgundy); font-size: 2rem; margin-bottom: 5px;">+20%</h4>
+                        <p style="color: var(--dark-brown);">рост к 2032 году</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Раздел 3: Механизм действия -->
+    <section id="mechanism" class="section">
+        <div class="section-number">03</div>
+        <div class="section-content">
+            <h2 class="section-title">Механизм действия и биомишень</h2>
+            
+            <div class="image-container">
+                <img src="apf.jpg" alt="Структура ангиотензин-превращающего фермента (АПФ)" 
+                     style="width: 100%; height: auto; display: block;">
+                <div class="image-caption">
+                    Рис. 2. Структура ангиотензин-превращающего фермента
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 class="card-title">
+                    <i class="fas fa-cogs" style="color: var(--primary-burgundy);"></i> Принцип фармакологической модуляции
+                </h3>
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--dark-brown); margin-bottom: 20px;">
+                    Разрабатываемое соединение является конкурентным ингибитором ангиотензин-превращающего фермента (АПФ, ACE). Кето-группы молекулы прочно связываются с активным центром фермента, обеспечивая стерическую блокаду и предотвращая образование ангиотензина II.
+                </p>
+                
+                <div class="image-container">
+                    <img src="схема_действия_АПФ.jpg" alt="Структура ангиотензин-превращающего фермента (АПФ)" 
+                         style="width: 100%; height: auto; display: block;">
+                    <div class="image-caption">
+                        Рис. 3. Принцип действия ангиотензин-превращающего фермента
+                    </div>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #f5f0eb, #f8f4f0); padding: 25px; border-radius: 12px; margin-top: 20px; border-left: 4px solid var(--accent-gold);">
+                    <h4 style="color: var(--primary-burgundy); margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-check-circle" style="color: var(--accent-gold);"></i> Ключевые элементы взаимодействия
+                    </h4>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li style="margin-bottom: 10px; padding-left: 25px; position: relative;">
+                            <i class="fas fa-circle" style="position: absolute; left: 0; color: var(--primary-burgundy); font-size: 8px; top: 8px;"></i>
+                            Координационное взаимодействие с ионом цинка в активном центре
+                        </li>
+                        <li style="margin-bottom: 10px; padding-left: 25px; position: relative;">
+                            <i class="fas fa-circle" style="position: absolute; left: 0; color: var(--primary-burgundy); font-size: 8px; top: 8px;"></i>
+                            Водородные связи с остатками аминокислот
+                        </li>
+                        <li style="margin-bottom: 10px; padding-left: 25px; position: relative;">
+                            <i class="fas fa-circle" style="position: absolute; left: 0; color: var(--primary-burgundy); font-size: 8px; top: 8px;"></i>
+                            π-Алкильные взаимодействия с гидрофобными карманами
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Раздел 4: Медицинско-химический дизайн -->
+    <section id="design" class="section">
+        <div class="section-number">04</div>
+        <div class="section-content">
+            <h2 class="section-title">Медицинско-химический дизайн</h2>
+            
+            <div class="image-container">
+                <img src="энал_анал.jpg" alt="Сравнение структур эналаприла и аналога" 
+                     style="width: 100%; height: auto; display: block;">
+                <div class="image-caption">Рис. 4. Сравнение структур эналаприла и разрабатываемого аналога</div>
+            </div>
+            
+            <!-- Диаграммы биодоступности -->
+            <div class="card">
+                <h3 class="card-title">
+                    <i class="fas fa-atom" style="color: var(--primary-burgundy);"></i> Молекулярный докинг и взаимодействия
+                </h3>
+                
+                <div style="margin: 25px 0;">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 25%;">Критерий сравнения</th>
+                                <th style="width: 25%;">Эналаприлат</th>
+                                <th style="width: 25%;">Наш Аналог</th>
+                                <th style="width: 25%;">Анализ и выводы</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Тип ключевых взаимодействий</strong></td>
+                                <td>
+                                    • Ионная связь (с ARG A-124)<br>
+                                    • Водородные связи<br>
+                                    • Гидрофобные контакты
+                                </td>
+                                <td>
+                                    <strong>1.</strong> Обширная сеть водородных связей (5 остатков)<br>
+                                    <strong>2.</strong> Пи-алкильные взаимодействия (3 остатка)<br>
+                                    <strong>3.</strong> Дополнительные гидрофобные контакты
+                                </td>
+                                <td class="advantage-cell">
+                                    <strong>Вывод:</strong> Аналог связывается гораздо шире, захватывая дополнительные сайты, что может повысить аффинность и селективность
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Количество и качество водородных связей</strong></td>
+                                <td>
+                                    <strong>4 явные связи:</strong><br>
+                                    • ARG A-124<br>
+                                    • GLU A-123<br>
+                                    • SER A-517<br>
+                                    • TYR A-523
+                                </td>
+                                <td>
+                                    <strong>5 водородных связей:</strong><br>
+                                    • GLU A-123<br>
+                                    • ASN A-121<br>
+                                    • TRP A-220<br>
+                                    • SER A-219<br>
+                                    • TYR A-135
+                                </td>
+                                <td class="advantage-cell">
+                                    <strong>Анализ:</strong> У аналога более богатая сеть H-связей. Это сильный признак: повышает селективность и аффинность, обеспечивает плотную "пришивку" к ферменту. Общий остаток GLU-123
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Энергия связывания (ΔG)</strong></td>
+                                <td style="text-align: center; font-weight: bold; color: var(--dark-brown);">
+                                    -8.7 ккал/моль
+                                </td>
+                                <td style="text-align: center; font-weight: bold; color: var(--primary-burgundy);">
+                                    -11.2 ккал/моль
+                                </td>
+                                <td class="advantage-cell">
+                                    <strong>Улучшение:</strong> Снижение энергии связывания на <strong>2.5 ккал/моль</strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- ADME профили -->
+            <div class="image-container">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                    <div>
+                        <img src="адме_энал.jpg" alt="ADME профиль эналаприла" 
+                             style="width: 100%; height: auto; border-radius: 8px;">
+                        <div style="text-align: center; margin-top: 10px; font-size: 0.9rem; color: var(--dark-brown);">
+                            <strong>Эналаприлат</strong> (активная форма)
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <img src="адме_анал.jpg" alt="ADME профиль аналога" 
+                             style="width: 100%; height: auto; border-radius: 8px;">
+                        <div style="text-align: center; margin-top: 10px; font-size: 0.9rem; color: var(--dark-brown);">
+                            <strong>Наш аналог</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="image-caption">Рис. 5. Сравнение ADME профилей эналаприлата и разрабатываемого аналога</div>
+            </div>
+            
+            <!-- Таблица с параметрами -->
+            <div class="card">
+                <h3 class="card-title">
+                    <i class="fas fa-table" style="color: var(--primary-burgundy);"></i> Сравнение физико-химических параметров
+                </h3>
+                
+                <table class="comparison-table" style="margin-top: 20px;">
+                    <thead>
+                        <tr>
+                            <th>Параметр</th>
+                            <th>Эналаприлат</th>
+                            <th>Наш аналог</th>
+                            <th>Изменение</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Molecular Weight (MW)</strong></td>
+                            <td>348.170</td>
+                            <td>359.150</td>
+                            <td style="color: var(--dark-brown);">+3.2%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>logS</strong> (растворимость)</td>
+                            <td>-1.486</td>
+                            <td>-1.393</td>
+                            <td style="color: var(--accent-gold);">↑ Улучшена</td>
+                        </tr>
+                        <tr>
+                            <td><strong>logP</strong> (липофильность)</td>
+                            <td>-0.446</td>
+                            <td>0.314</td>
+                            <td style="color: var(--accent-gold);">↑ Улучшена</td>
+                        </tr>
+                        <tr>
+                            <td><strong>QED</strong> (лекарственное подобие)</td>
+                            <td>0.650</td>
+                            <td>0.750</td>
+                            <td style="color: var(--accent-gold); font-weight: bold;">↑ +15.4%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>SAscore</strong></td>
+                            <td>2.984</td>
+                            <td>3.091</td>
+                            <td style="color: var(--dark-brown);">+3.6%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>PPB</strong> (связывание с белками)</td>
+                            <td>44.073%</td>
+                            <td>9.533%</td>
+                            <td style="color: var(--accent-gold); font-weight: bold;">↓ -78.4%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CL</strong> (клиренс)</td>
+                            <td>0.925</td>
+                            <td>7.407</td>
+                            <td style="color: var(--accent-gold); font-weight: bold;">↑ ×8.0</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div style="margin-top: 25px; padding: 20px; background: linear-gradient(135deg, #f8f4f0, #f5f0eb); border-radius: 12px;">
+                    <h4 style="color: var(--primary-burgundy); margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-lightbulb" style="color: var(--accent-gold);"></i> Ключевые улучшения параметров
+                    </h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                        <div style="padding: 15px; background: white; border-radius: 8px;">
+                            <div style="color: var(--accent-gold); font-weight: bold; margin-bottom: 5px;">↑ QED +15.4%</div>
+                            <div style="font-size: 0.9rem;">Улучшенное лекарственное подобие</div>
+                        </div>
+                        <div style="padding: 15px; background: white; border-radius: 8px;">
+                            <div style="color: var(--accent-gold); font-weight: bold; margin-bottom: 5px;">↓ PPB -78.4%</div>
+                            <div style="font-size: 0.9rem;">Меньше связывания с белками плазмы</div>
+                        </div>
+                        <div style="padding: 15px; background: white; border-radius: 8px;">
+                            <div style="color: var(--accent-gold); font-weight: bold; margin-bottom: 5px;">↑ CL ×8.0</div>
+                            <div style="font-size: 0.9rem;">Значительно улучшенный клиренс</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Раздел 5: Синтез -->
+    <section id="synthesis" class="section">
+        <div class="section-number">05</div>
+        <div class="section-content">
+            <h2 class="section-title">Синтез и экспериментальная часть</h2>
+            
+            <div class="image-container">
+                <img src="синтез_аналог.jpg" alt="Схема синтеза аналога эналаприла" 
+                     style="width: 100%; height: auto; display: block;">
+                <div class="image-caption">Рис. 6. Схема трехстадийного синтеза разрабатываемого аналога</div>
+            </div>
+            
+            <!-- Таблица реактивов для синтеза -->
+            <div class="card">
+                <h3 class="card-title">
+                    <i class="fas fa-flask" style="color: var(--primary-burgundy);"></i> Реактивы для трехстадийного синтеза
+                </h3>
+                
+                <table class="reagents-table">
+                    <thead>
+                        <tr>
+                            <th>Реактив</th>
+                            <th>Стоимость, ₽</th>
+                            <th>Количество</th>
+                            <th>Ссылка на поставщика</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>N-бензилоксикарбонил-L-фенилаланина</td>
+                            <td>16 810</td>
+                            <td>25 г</td>
+                            <td><a href="https://rearus.ru/index.php?route=product/product&product_id=88183" target="_blank">ReaRus</a></td>
+                        </tr>
+                        <tr>
+                            <td>L-пролин</td>
+                            <td>84 958</td>
+                            <td>100 г</td>
+                            <td><a href="https://reaktiv-express.ru/product/proline-l-usp-jirong-pharmaceutical-jrpc-100-g-pcs" target="_blank">Reaktiv-Express</a></td>
+                        </tr>
+                        <tr>
+                            <td>PyBOP, 98%</td>
+                            <td>95 643</td>
+                            <td>25 г</td>
+                            <td><a href="https://chimmed.ru/products/pybop-99-id=8350534" target="_blank">Chimmed</a></td>
+                        </tr>
+                        <tr>
+                            <td>N-метилморфолин, 99%</td>
+                            <td>25 357</td>
+                            <td>2.5 кг</td>
+                            <td><a href="https://rearus.ru/index.php?route=product/product&product_id=13031" target="_blank">ReaRus</a></td>
+                        </tr>
+                        <tr>
+                            <td>N-Гидроксисукцинимид (NHS) purum ≥97%</td>
+                            <td>3 765</td>
+                            <td>1 г</td>
+                            <td><a href="https://eko-tec.ru/reaktivy-dlya-farmacevtiki/aminokisloty-smoly-i-reaktivy-dlia-sinteza-peptidov/n-gidroksisuktsinimid-3/" target="_blank">Eko-Tec</a></td>
+                        </tr>
+                        <tr>
+                            <td>ДМФА</td>
+                            <td>450</td>
+                            <td>1000 г</td>
+                            <td><a href="https://kupihim.ru/catalog/rastvoritel/547-size-1-kg/" target="_blank">Kupihim</a></td>
+                        </tr>
+                        <tr>
+                            <td>Серная кислота (хч)</td>
+                            <td>57</td>
+                            <td>100 мл</td>
+                            <td><a href="https://chem-ex.ru/catalog/khimiya/kisloty/sernaya_kislota_khch_sigma_tek/" target="_blank">Chem-Ex</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div style="background: linear-gradient(135deg, var(--primary-burgundy), var(--secondary-burgundy)); color: white; padding: 20px; border-radius: 12px; margin-top: 20px;">
+                    <h4 style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-calculator"></i> Экономическая эффективность синтеза
+                    </h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                        <div>
+                            <div style="font-size: 1.5rem; font-weight: bold;">2 565 ₽/г</div>
+                            <div>Стоимость синтеза 1 г нашего аналога</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 1.5rem; font-weight: bold;">3 784 ₽/г</div>
+                            <div>Стоимость синтеза 1 г эналаприла</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 1.5rem; font-weight: bold;">-32%</div>
+                            <div>Экономия при синтезе</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 class="card-title">
+                    <i class="fas fa-cogs" style="color: var(--primary-burgundy);"></i> Трехстадийный синтез
+                </h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+                    <div style="padding: 25px; background: #f8f4f0; border-radius: 12px; border-left: 4px solid var(--primary-burgundy);">
+                        <h4 style="color: var(--primary-burgundy); margin-bottom: 15px;">Стадия 1: Конденсация</h4>
+                        <p>Образование амидной связи между Cbz-защищенным L-фенилаланином и L-пролином</p>
+                    </div>
+                    
+                    <div style="padding: 25px; background: #f8f4f0; border-radius: 12px; border-left: 4px solid var(--secondary-burgundy);">
+                        <h4 style="color: var(--secondary-burgundy); margin-bottom: 15px;">Стадия 2: Кетолизирование</h4>
+                        <p>Кетонное расщепление для введения функциональной группы</p>
+                    </div>
+                    
+                    <div style="padding: 25px; background: #f8f4f0; border-radius: 12px; border-left: 4px solid var(--accent-gold);">
+                        <h4 style="color: var(--accent-gold); margin-bottom: 15px;">Стадия 3: Этерификация</h4>
+                        <p>Образование сложного эфира для оптимизации липофильности</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Раздел 6: Коммерциализация -->
+    <section id="commercial" class="section">
+        <div class="section-number">06</div>
+        <div class="section-content">
+            <h2 class="section-title">Аспекты коммерциализации</h2>
+            
+            <div class="image-container">
+                <img src="прогноз_коммерция.jpg" alt="Прогноз рынка ингибиторов АПФ" 
+                     style="width: 100%; height: auto; display: block;">
+                <div class="image-caption">Рис. 7. Динамика роста мирового рынка ингибиторов АПФ (прогноз 2024-2033)</div>
+            </div>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">$3.8 млрд</div>
+                    <div class="metric-label">Рынок 2024</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">8.6% CAGR</div>
+                    <div class="metric-label">Темп роста</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">$5.57 млрд</div>
+                    <div class="metric-label">Прогноз 2032</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Раздел 7: Планы на будущее -->
+    <section id="future-plans" class="section">
+        <div class="section-number">07</div>
+        <div class="section-content">
+            <h2 class="section-title">Цели и задачи ближайшего этапа</h2>
+            
+            <div class="image-container">
+                <img src="этапы.jpg" alt="Этапы реализации проекта" 
+                     style="width: 100%; height: auto; display: block;">
+                <div class="image-caption">Рис. 8. Цели и задачи ближайшего этапа</div>
+            </div>
+            
+            <div class="card">
+                <h3 class="card-title">
+                    <i class="fas fa-calendar-alt" style="color: var(--primary-burgundy);"></i> Хронология проекта (с 2030 года)
+                </h3>
+                
+                <div class="timeline-container">
+                    <div class="timeline-line"></div>
+                    
+                    <!-- Этап 1: Закупка реактивов -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background: var(--primary-burgundy);"></div>
+                        <div class="timeline-content">
+                            <h4 style="color: var(--primary-burgundy); margin-bottom: 10px;">
+                                Закупка реактивов и оборудования
+                            </h4>
+                            <p style="color: var(--dark-brown); padding: 10px; background: #f8f4f0; border-radius: 8px;">
+                                • Приобретение всех необходимых реагентов для синтеза<br>
+                                • Настройка лабораторного оборудования<br>
+                                • Подготовка рабочего пространства
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Этап 2: Синтез аналога -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background: var(--secondary-burgundy);"></div>
+                        <div class="timeline-content">
+                            <h4 style="color: var(--secondary-burgundy); margin-bottom: 10px;">
+                                Синтез аналога
+                            </h4>
+                            <p style="color: var(--dark-brown); padding: 10px; background: #f8f4f0; border-radius: 8px;">
+                                • Проведение трехстадийного синтеза<br>
+                                • Очистка и характеристика полученного соединения<br>
+                                • Валидация методики синтеза
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Этап 3: Оптимизация синтеза -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background: var(--accent-gold);"></div>
+                        <div class="timeline-content">
+                            <h4 style="color: var(--accent-gold); margin-bottom: 10px;">
+                                Оптимизация синтеза
+                            </h4>
+                            <p style="color: var(--dark-brown); padding: 10px; background: #f8f4f0; border-radius: 8px;">
+                                • Повышение выхода реакции (цель: >60%)<br>
+                                • Упрощение методики для масштабирования<br>
+                                • Снижение стоимости производства
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Этап 4: Подбор условий для in vitro -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background: var(--primary-burgundy);"></div>
+                        <div class="timeline-content">
+                            <h4 style="color: var(--primary-burgundy); margin-bottom: 10px;">
+                                Подбор условий для in vitro
+                            </h4>
+                            <p style="color: var(--dark-brown); padding: 10px; background: #f8f4f0; border-radius: 8px;">
+                                • Культивирование клеточных линий<br>
+                                • Определение оптимальных концентраций<br>
+                                • Разработка протоколов тестирования
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Этап 5: In vitro испытания -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background: var(--secondary-burgundy);"></div>
+                        <div class="timeline-content">
+                            <h4 style="color: var(--secondary-burgundy); margin-bottom: 10px;">
+                                In vitro испытания
+                            </h4>
+                            <p style="color: var(--dark-brown); padding: 10px; background: #f8f4f0; border-radius: 8px;">
+                                • Тестирование ингибирующей активности<br>
+                                • Оценка цитотоксичности<br>
+                                • Исследование механизма действия
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Этап 6: Согласие этического комитета -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background: var(--accent-gold);"></div>
+                        <div class="timeline-content">
+                            <h4 style="color: var(--accent-gold); margin-bottom: 10px;">
+                                Согласие этического комитета
+                            </h4>
+                            <p style="color: var(--dark-brown); padding: 10px; background: #f8f4f0; border-radius: 8px;">
+                                • Подготовка документации<br>
+                                • Подача заявки в этический комитет<br>
+                                • Получение разрешения на исследования на животных
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Этап 7: In vivo -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background: var(--primary-burgundy);"></div>
+                        <div class="timeline-content">
+                            <h4 style="color: var(--primary-burgundy); margin-bottom: 10px;">
+                                In vivo испытания
+                            </h4>
+                            <p style="color: var(--dark-brown); padding: 10px; background: #f8f4f0; border-radius: 8px;">
+                                • Исследования на животных моделях гипертензии<br>
+                                • Оценка антигипертензивной эффективности<br>
+                                • Токсикологические исследования
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Этап 8: Начало патентования -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background: var(--secondary-burgundy);"></div>
+                        <div class="timeline-content">
+                            <h4 style="color: var(--secondary-burgundy); margin-bottom: 10px;">
+                                Начало патентования результатов
+                            </h4>
+                            <p style="color: var(--dark-brown); padding: 10px; background: #f8f4f0; border-radius: 8px;">
+                                • Подготовка патентной заявки<br>
+                                • Регистрация интеллектуальной собственности<br>
+                                • Стратегия патентной защиты
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Заключительный этап -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot" style="background: var(--accent-gold); border: 3px solid var(--primary-burgundy);"></div>
+                        <div class="timeline-content">
+                            <h4 style="color: var(--accent-gold); margin-bottom: 10px;">
+                                Дальнейшие перспективы
+                            </h4>
+                            <p style="color: var(--dark-brown); padding: 15px; background: linear-gradient(135deg, #f8f4f0, #f5f0eb); border-radius: 8px; border-left: 4px solid var(--accent-gold);">
+                                • Подготовка к клиническим исследованиям<br>
+                                • Поиск инвесторов и партнеров<br>
+                                • Разработка лекарственных форм<br>
+                                • Планирование выхода на рынок
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Раздел 8: Команда -->
+    <section id="team" class="section">
+        <div class="section-number">08</div>
+        <div class="section-content">
+            <h2 class="section-title">Команда проекта</h2>
+            
+            <div class="team-grid">
+                <!-- Участник 1 -->
+                <div class="team-card">
+                    <img src="варя.jpg" alt="Антуганова Варвара" 
+                         style="width: 120px; height: 120px; margin: 0 auto 20px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-burgundy);">
+                    <h3 style="color: var(--primary-burgundy); margin-bottom: 10px; text-align: center;">Антуганова Варвара Александровна</h3>
+                    <div style="text-align: center; margin-bottom: 15px;">
+                        <span style="background: var(--accent-gold); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; display: inline-block;">
+                            <i class="fas fa-flask"></i> Синтез
+                        </span>
+                    </div>
+                    <p style="color: var(--dark-brown); margin-bottom: 15px; text-align: center;">
+                        <strong>Роль:</strong> Составление схемы синтеза<br>
+                        <strong>Образование:</strong> Студент 4 курса<br>
+                        <strong>Контакты:</strong> +7 960 508 92 22
+                    </p>
+                    <div style="text-align: center;">
+                        <a href="mailto:email1@example.com" style="color: var(--primary-burgundy); margin: 0 8px;">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Участник 2 -->
+                <div class="team-card">
+                    <img src="аня.jpg" alt="Жидоморова Анна" 
+                         style="width: 120px; height: 120px; margin: 0 auto 20px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-burgundy);">
+                    <h3 style="color: var(--primary-burgundy); margin-bottom: 10px; text-align: center;">Жидоморова Анна Николаевна</h3>
+                    <div style="text-align: center; margin-bottom: 15px;">
+                        <span style="background: var(--primary-burgundy); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; display: inline-block;">
+                            <i class="fas fa-desktop"></i> Моделирование
+                        </span>
+                    </div>
+                    <p style="color: var(--dark-brown); margin-bottom: 15px; text-align: center;">
+                        <strong>Роль:</strong> Компьютерное моделирование<br>
+                        <strong>Образование:</strong> Студент 4 курса<br>
+                        <strong>Контакты:</strong> +7 901 281 49 08
+                    </p>
+                    <div style="text-align: center;">
+                        <a href="mailto:email2@example.com" style="color: var(--primary-burgundy); margin: 0 8px;">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Участник 3 -->
+                <div class="team-card">
+                    <img src="кристи.jpg" alt="Леонова Кристина" 
+                         style="width: 120px; height: 120px; margin: 0 auto 20px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-burgundy);">
+                    <h3 style="color: var(--primary-burgundy); margin-bottom: 10px; text-align: center;">Леонова Кристина Романовна</h3>
+                    <div style="text-align: center; margin-bottom: 15px;">
+                        <span style="background: var(--secondary-burgundy); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; display: inline-block;">
+                            <i class="fas fa-atom"></i> Молекулярный дизайн
+                        </span>
+                    </div>
+                    <p style="color: var(--dark-brown); margin-bottom: 15px; text-align: center;">
+                        <strong>Роль:</strong> Молекулярный дизайн<br>
+                        <strong>Образование:</strong> Студент 4 курса<br>
+                        <strong>Контакты:</strong> +7 920 358 37 80
+                    </p>
+                    <div style="text-align: center;">
+                        <a href="mailto:email3@example.com" style="color: var(--primary-burgundy); margin: 0 8px;">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Контактная информация -->
+            <div class="card" style="margin-top: 40px;">
+                <h3 class="card-title">
+                    <i class="fas fa-university" style="color: var(--primary-burgundy);"></i> Учреждение
+                </h3>
+                <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <h4 style="color: var(--primary-burgundy); margin-bottom: 10px;">Ивановский государственный химико-технологический университет</h4>
+                        <p style="color: var(--dark-brown);">
+                            <strong>Кафедра:</strong> Неорганической химии и технологии<br>
+                            <strong>Направление:</strong> Медицинская и фармацевтическая химия
+                        </p>
+                    </div>
+                    <div style="flex: 1; min-width: 300px; padding: 20px; background: #f8f4f0; border-radius: 10px;">
+                        <h4 style="color: var(--primary-burgundy); margin-bottom: 10px;">Контактная информация</h4>
+                        <p style="color: var(--dark-brown);">
+                            <strong>Телефон:</strong> +7 (4932) 93-93-31<br>
+                            <strong>Email:</strong> nhit@isuct.ru<br>
+                            <strong>Адрес:</strong> г. Иваново, пр. Шереметевский, 7
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Блок с источниками -->
+    <section class="sources-container">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div style="text-align: center;">
+                <button id="sources-toggle" class="sources-toggle-btn" onclick="toggleSources()">
+                    <i class="fas fa-book"></i> 
+                    <span id="sources-button-text">Показать список источников</span>
+                    <i class="fas fa-chevron-down" id="sources-chevron" style="transition: transform 0.3s ease;"></i>
+                </button>
+            </div>
+            
+            <div id="sources-content" class="sources-content">
+                <div style="background: white; border-radius: 16px; padding: 40px; box-shadow: var(--shadow);">
+                    <h3 style="color: var(--primary-burgundy); margin-bottom: 30px; text-align: center; font-size: 1.8rem;">
+                        <i class="fas fa-list-alt" style="margin-right: 10px;"></i> Список источников
+                    </h3>
+                    
+                    <div id="sources-text-container" style="font-size: 1rem; line-height: 1.8; color: var(--dark-brown);">
+                        <h4 style="color: var(--primary-burgundy); margin-bottom: 20px;">Использованные источники:</h4>
+                        
+                        <ol style="padding-left: 20px; margin-bottom: 25px;">
+                            <li style="margin-bottom: 15px;">
+                                <strong>World Health Organization (WHO)</strong><br>
+                                <span style="color: var(--secondary-burgundy);">Глобальная статистика артериальной гипертензии</span><br>
+                                <a href="https://data.who.int/ru/indicators/i/7DA4E68/608DE39" 
+                                   target="_blank" 
+                                   style="color: var(--primary-burgundy); text-decoration: none; border-bottom: 1px dotted;">
+                                    https://data.who.int/ru/indicators/i/7DA4E68/608DE39
+                                </a><br>
+                                <span style="font-size: 0.9rem; color: #666;">(дата обращения: 16.12.25)</span>
+                            </li>
+                            
+                            <li style="margin-bottom: 15px;">
+                                <strong>Future Market Report</strong><br>
+                                <span style="color: var(--secondary-burgundy);">Анализ рынка ингибиторов АПФ</span><br>
+                                <a href="https://www.futuremarketreport.com/" 
+                                   target="_blank" 
+                                   style="color: var(--primary-burgundy); text-decoration: none; border-bottom: 1px dotted;">
+                                    https://www.futuremarketreport.com/
+                                </a><br>
+                                <span style="font-size: 0.9rem; color: #666;">(дата обращения: 16.12.25)</span>
+                            </li>
+                        </ol>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button onclick="copySources()" 
+                                style="background: var(--accent-gold); color: white; border: none; 
+                                       padding: 10px 25px; border-radius: 25px; cursor: pointer; 
+                                       font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px;">
+                            <i class="far fa-copy"></i> Копировать список
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="contact-info">
+            <h3 style="margin-bottom: 20px;">Ивановский государственный химико-технологический университет</h3>
+            <p style="margin-bottom: 10px;">Кафедра Неорганической химии и технологии</p>
+            <p style="margin-bottom: 20px;">© 2025 Научно-исследовательский проект по разработке ингибитора АПФ</p>
+            <div style="display: flex; justify-content: center; gap: 20px; margin-top: 30px;">
+                <i class="fas fa-phone-alt"></i> +7 (4932) 93-93-31
+                <i class="fas fa-envelope"></i> nhit@isuct.ru
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Маппинг разделов и их заголовков для навигации
+        const sectionMap = {
+            'summary': 'Резюме',
+            'problem': 'Проблема', 
+            'mechanism': 'Механизм',
+            'design': 'Дизайн',
+            'synthesis': 'Синтез',
+            'commercial': 'Коммерция',
+            'future-plans': 'Планы',
+            'team': 'Команда'
+        };
+        
+        // Инициализация навигационных точек
+        document.addEventListener('DOMContentLoaded', function() {
+            // Назначаем обработчики кликов для навигационных точек
+            document.querySelectorAll('.nav-dot').forEach(dot => {
+                dot.addEventListener('click', function() {
+                    const sectionId = this.getAttribute('data-section');
+                    if (sectionId) {
+                        scrollToSection(sectionId);
+                    }
+                });
+            });
+            
+            // Анимация диаграмм биодоступности
+            setTimeout(() => {
+                const analogBar = document.querySelector('.bar-analog');
+                const enalaprilBar = document.querySelector('.bar-enalapril');
+                
+                if (analogBar) analogBar.style.height = '220px';
+                if (enalaprilBar) enalaprilBar.style.height = '150px';
+            }, 500);
+        });
+        
+        // Функция для прокрутки к разделу
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scIntoView({
+                    behavior: 'smooth'
+                });
+                updateActiveNav(sectionId);
+            }
+        }
+        
+        // Обновление активной точки навигации
+        function updateActiveNav(sectionId) {
+            document.querySelectorAll('.nav-dot').forEach(dot => {
+                dot.classList.remove('active');
+                const dotTitle = dot.getAttribute('data-title');
+                if (sectionMap[sectionId] === dotTitle) {
+                    dot.classList.add('active');
+                }
+            });
+        }
+        
+        // Обновление активной точки при прокрутке
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.section');
+            const scrollPosition = window.pageYOffset + window.innerHeight / 3;
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            if (currentSection) {
+                updateActiveNav(currentSection);
+            }
+        });
+        
+        // Функция для показа/скрытия источников
+        function toggleSources() {
+            const content = document.getElementById('sources-content');
+            const buttonText = document.getElementById('sources-button-text');
+            const chevron = document.getElementById('sources-chevron');
+            
+            if (content.classList.contains('show')) {
+                // Скрыть блок
+                content.classList.remove('show');
+                buttonText.textContent = 'Показать список источников';
+                chevron.style.transform = 'rotate(0deg)';
+                
+                setTimeout(() => {
+                    content.style.display = 'none';
+                }, 500);
+            } else {
+                // Показать блок
+                content.style.display = 'block';
+                setTimeout(() => {
+                    content.classList.add('show');
+                }, 10);
+                buttonText.textContent = 'Скрыть список источников';
+                chevron.style.transform = 'rotate(180deg)';
+            }
+        }
+        
+        // Функция для копирования списка источников
+        function copySources() {
+            const sourcesText = document.getElementById('sources-text-container').innerText;
+            
+            // Создаем временный элемент для копирования
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = sourcesText;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            tempTextArea.setSelectionRange(0, 99999);
+            
+            try {
+                document.execCommand('copy');
+                // Показываем уведомление
+                alert('Список источников скопирован в буфер обмена!');
+            } catch (err) {
+                console.error('Ошибка при копировании:', err);
+            }
+            
+            document.body.removeChild(tempTextArea);
+        }
+    </script>
+</body>
+</html>
